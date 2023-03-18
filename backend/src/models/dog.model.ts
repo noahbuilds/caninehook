@@ -8,10 +8,13 @@ const dogSchema = new mongoose.Schema<IDog>({
   image: { type: [String], required: true },
   availableForHook: { type: Boolean, required: true },
   numberOfHooks: { type: Number, required: true },
-  sex: { enum: Gender, required: true },
+  gender: {type:String, enum: Gender, required: true },
+  owner: {type: String},
+  price: {type:String, required: true}
 });
- export const Dog = mongoose.model("Dog", dogSchema);
+const Dog = mongoose.model("Dog", dogSchema);
 
-module.exports={
-Dog
-} 
+
+export {
+  Dog,
+};

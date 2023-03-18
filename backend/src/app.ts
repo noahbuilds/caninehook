@@ -1,26 +1,35 @@
-import express,{ Application, Request, Response} from 'express'
-import configuration from './configs/configs'
-import mongoose, { ConnectOptions } from 'mongoose';
-// import {Dog}  from './models/dog.model';
-import {Dog, User} from './models/index'
+import express, { Application, Request, Response, Router } from "express";
+import httpStatus from "http-status";
+import { ApiError } from "./utilities/apiError";
+import configuration from "./configs/configs";
+import mongoose, { ConnectOptions } from "mongoose";
+import { Dog, User } from "./models/index";
+import {userRouter, dogRouter}  from "./routes/index";
 
 
+const app: Application = express();
 
-const app: Application = express()
+// parse json request body
+app.use(express.json());
 
+// parse urlencoded request body
+app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req:Request, res:Response)=>{
-    res.json({
-        msg: 'welcome'
-    });
+// welcome page
+app.get("/", async (req: Request, res: Response): Promise<any> => {
+  return res.json({
+    msg: "welcome",
+  });
 });
 
 
 // database connection
 (async function () {
   try {
-    await mongoose.connect(configuration.MONGO_URL!, { useNewUrlParser: true } as ConnectOptions);
+    await mongoose.connect(configuration.MONGO_URL!, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    } as ConnectOptions);
     return console.log(`Successfully connected to ${configuration.MONGO_URL}`);
   } catch (error) {
     console.log("Error connecting to database: ", error);
@@ -29,7 +38,14 @@ app.get('/', (req:Request, res:Response)=>{
 })();
 
 
+app.use("/api/v1/user", userRouter )
+app.use("/api/v1/dog", dogRouter)
 
-app.listen(configuration.ENV_PORT, ()=>{
-    console.log("App is running on PORT 4000")
+app.use((req: Request, res:Response, next)=>{
+  next(new ApiError(httpStatus.NOT_FOUND, "Not Found"))
 })
+
+app.listen(configuration.ENV_PORT, () => {
+  console.log("App is running on PORT 4000");
+});
+
