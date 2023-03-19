@@ -9,7 +9,6 @@ router.get("/", userController.getUsers);
 
 //get userbyId
 router.get("/:id", userController.getUserById);
-//add user
-router.post("/", userController.createUser);
+
 
 export { router as userRouter };

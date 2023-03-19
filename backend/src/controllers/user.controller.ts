@@ -2,18 +2,18 @@ import { Request, Response } from "express";
 import {userService} from "../services/user.service";
 
 const userController = {
-  createUser: async (req: Request, res: Response) => {
-    try {
-     
-      let result = await userService.createUser(req.body);
-      return res.json(result);
-    } catch (error: any) {
-      return res.json({
-        msg: " Couldnt create user",
-        err: error.message,
-      });
-    }
-  },
+ 
+    // createUser: async (req: Request, res: Response) => {
+    //     try {
+    //       let result = await userService.createUser(req.body);
+    //       return res.json(result);
+    //     } catch (error: any) {
+    //       return res.json({
+    //         msg: " Couldnt create user",
+    //         err: error.message,
+    //       });
+    //     }
+    //   },
 
   getUsers: async (req: Request, res: Response) => {
     // let users = await User.find({});

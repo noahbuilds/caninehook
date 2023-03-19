@@ -1,10 +1,9 @@
-import express, { Application, Request, Response, Router } from "express";
+import express, { Application, Request, Response } from "express";
 import httpStatus from "http-status";
-import { ApiError } from "./utilities/apiError";
+import { ApiError } from "../utilities/apiError";
 import configuration from "./configs/configs";
 import mongoose, { ConnectOptions } from "mongoose";
-import { Dog, User } from "./models/index";
-import {userRouter, dogRouter}  from "./routes/index";
+import {userRouter, dogRouter, authRouter}  from "./routes/index";
 
 
 const app: Application = express();
@@ -40,6 +39,7 @@ app.get("/", async (req: Request, res: Response): Promise<any> => {
 
 app.use("/api/v1/user", userRouter )
 app.use("/api/v1/dog", dogRouter)
+app.use("/api/v1/auth", authRouter)
 
 app.use((req: Request, res:Response, next)=>{
   next(new ApiError(httpStatus.NOT_FOUND, "Not Found"))
