@@ -10,3 +10,9 @@ export interface IUser {
     dogs: [String];
     rating: number;
   }
+  
+
+  export interface ILogin{
+    email: string;
+    password: string
+  }

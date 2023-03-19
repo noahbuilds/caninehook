@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
 import { authService, userService } from "../services";
-import { IUser } from "../models/interface/user";
-import { User } from "../models";
-import bcrypt from "bcrypt";
 
 const authController = {
   createUser: async (req: Request, res: Response) => {
@@ -28,6 +25,7 @@ const authController = {
       if (result) {
         return res.json(result);
       }
+
       return res.json({
         msg: "username or password is incorrect",
         login: false,

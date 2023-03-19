@@ -1,35 +1,21 @@
-import { User } from "../models";
-import { IUser } from "../models/interface/user";
+import { ILogin, IUser } from "../models/interface/user";
+import { userService } from "./user.service";
+import bcrypt from "bcrypt";
 
 const authService = {
-    // createUser: async (reqBody: IUser):Promise<IUser> => {
-    //     const {
-    //       firstName,
-    //       lastName,
-    //       email,
-    //       password,
-    //       dogs,
-    //       gender,
-    //       location,
-    //       rating,
-    //     } = reqBody;
-       
-    //     return User.create({
-    //       firstName,
-    //       lastName,
-    //       email,
-    //       password,
-    //       dogs,
-    //       gender,
-    //       location,
-    //       rating,
-    //     });
-    //   },
-  loginUser: async (reqBody: any) => {
+  loginUser: async (reqBody: ILogin): Promise<IUser | null> => {
     const { email, password } = reqBody;
-    let found = await User.findOne({ email: email });
-    return found;
+    let foundEmail = await userService.emailExists(email);
+
+    if (foundEmail != null) {
+      let passwordMatch = await bcrypt.compare(password, foundEmail?.password);
+      if (passwordMatch) {
+        return foundEmail;
+      }
+    }
+    return null;
   },
+
   logoutUser: async () => {},
 };
 

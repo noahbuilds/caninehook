@@ -2,7 +2,6 @@ import { User } from "../models";
 import { IUser } from "../models/interface/user";
 import bcrypt from "bcrypt";
 
-
 const userService = {
   createUser: async (reqBody: IUser) => {
     const {
@@ -29,12 +28,10 @@ const userService = {
     });
   },
 
-  emailExists: async (email: string): Promise<boolean> => {
+  emailExists: async (email: string): Promise<IUser | null> => {
     let result = await User.findOne({ email });
-    if (result) {
-      return true;
-    }
-    return false;
+
+    return result;
   },
 
   getUserById: async (id: string): Promise<IUser | null> => {
