@@ -25,11 +25,11 @@ app.get("/", async (req: Request, res: Response): Promise<any> => {
 // database connection
 (async function () {
   try {
-    await mongoose.connect(configuration.MONGO_URL!, {
+    await mongoose.connect(configuration.MONGO_URI!, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     } as ConnectOptions);
-    return console.log(`Successfully connected to ${configuration.MONGO_URL}`);
+    return console.log(`Successfully connected to ${configuration.MONGO_URI}`);
   } catch (error) {
     console.log("Error connecting to database: ", error);
     return process.exit(1);

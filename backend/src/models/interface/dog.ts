@@ -6,7 +6,7 @@ export interface IDog {
   image: string[];
   availableForHook: boolean;
   numberOfHooks: number;
-  owner: string
+  owner: string;
   gender: string;
   price: string;
 }

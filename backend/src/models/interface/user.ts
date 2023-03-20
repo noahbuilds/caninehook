@@ -9,6 +9,7 @@ export interface IUser {
     gender: string;
     dogs: [String];
     rating: number;
+    token: string
   }
   
 

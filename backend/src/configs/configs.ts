@@ -7,7 +7,7 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const configuration  = {
     ENV_PORT : process.env.PORT,
-    MONGO_URL: process.env.MONGO_URL
+    MONGO_URI: process.env.MONGO_URI
 }
 
 

@@ -9,7 +9,7 @@ const dogSchema = new mongoose.Schema<IDog>({
   availableForHook: { type: Boolean, required: true },
   numberOfHooks: { type: Number, required: true },
   gender: {type:String, enum: Gender, required: true },
-  owner: {type: String},
+  owner: {type: String, ref: "User"},
   price: {type:String, required: true}
 });
 const Dog = mongoose.model("Dog", dogSchema);
