@@ -1,4 +1,5 @@
 import { Gender } from "../enums/gender";
+import { Types } from "mongoose";
 
 export interface IDog {
   name: string;
@@ -6,7 +7,7 @@ export interface IDog {
   image: string[];
   availableForHook: boolean;
   numberOfHooks: number;
-  owner: string;
+  owner: Types.ObjectId;
   gender: string;
   price: string;
 }
