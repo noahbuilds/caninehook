@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { authService, userService } from "../services";
+
+import { authService, userService, tokenService } from "../services";
 
 const authController = {
   createUser: async (req: Request, res: Response) => {
@@ -11,10 +12,12 @@ const authController = {
         });
       }
       let result = await userService.createUser(req.body);
+      let token =  tokenService.assignToken(result)
+      console.log(token)
       return res.json(result);
     } catch (error: any) {
       return res.json({
-        msg: " Couldnt create user",
+        msg: "Couldnt create user",
         err: error.message,
       });
     }
@@ -23,8 +26,12 @@ const authController = {
     try {
       let result = await authService.loginUser(req.body);
       if (result) {
+        let userToken = tokenService.assignToken(result);
+        res.set('auth-token', userToken)
+        // console.log(userToken)
         return res.json(result);
       }
+      
 
       return res.json({
         msg: "username or password is incorrect",
