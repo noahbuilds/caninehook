@@ -2,9 +2,12 @@ import { Request, Response } from "express";
 import { dogService } from "../services";
 
 const dogController = {
-  createDog: async (req: Request, res: Response) => {
+  createDog: async (req: any, res: Response) => {
     try {
-      let result = await dogService.createDog(req.body);
+      let ownerId = req.params.ownerId
+      //  get user fri
+      console.log(ownerId)
+      let result = await dogService.createDog(req.body, ownerId);
       return res.json(result);
     } catch (error: any) {
       return res.json({
@@ -24,7 +27,7 @@ const dogController = {
       return res.json(result);
     } catch (error: any) {
       return res.json({
-        msg: " Couldnt get users",
+        msg: "Couldnt get dogs",
         err: error.message,
       });
     }

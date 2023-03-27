@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema<IUser>({
   lastName: { type: String, required: true },
   email: { type: String, required: true,unique: true, uppercase: false },
   password: { type: String, required: true },
-  dogs: { type: [String] },
   gender: { type: String, enum: Gender, required: true },
   location: {type: String},
   rating: {type: Number},

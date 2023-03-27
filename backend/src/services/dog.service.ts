@@ -2,8 +2,8 @@ import { IDog } from "../models/interface/dog";
 import { Dog } from "../models";
 
 const dogService =  {
-    createDog: async (reqBody: IDog):Promise<IDog> => {
-        console.log(reqBody)
+    createDog: async (reqBody: IDog, ownerId: any ):Promise<IDog> => {
+        // console.log(reqBody)
         const {
             name,
             breed,
@@ -21,7 +21,7 @@ const dogService =  {
             availableForHook,
             numberOfHooks,
             gender,
-            owner,
+            owner: ownerId,
             price
         });
       },
@@ -29,7 +29,9 @@ const dogService =  {
         return Dog.findById(id);
       },
       getDogs: async (): Promise<IDog[] | null> => {
-        return Dog.find({});
+        // let dogOwner = await Dog.find({}).populate("owner").exec()
+        // console.log(dogOwner)
+        return Dog.find({}).populate("owner").exec();
       },
 }
 
