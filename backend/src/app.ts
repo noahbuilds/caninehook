@@ -39,7 +39,7 @@ app.get("/", async (req: Request, res: Response): Promise<any> => {
 
 
 app.use("/api/v1/user", auth, userRouter )
-app.use("/api/v1/dog", auth, dogRouter)
+app.use("/api/v1/dogs", auth, dogRouter)
 app.use("/api/v1/auth", authRouter)
 
 app.use((req: Request, res:Response, next)=>{
