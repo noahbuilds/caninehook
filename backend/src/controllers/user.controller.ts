@@ -15,11 +15,12 @@ const userController = {
     //     }
     //   },
 
-  getUsers: async (req: Request, res: Response) => {
+  getUsers: async (req: any, res: Response) => {
     // let users = await User.find({});
     // return res.json({
     //   user: users,
     // });
+    
     try {
       let result = await userService.getUsers();
       return res.json(result);

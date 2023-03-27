@@ -4,13 +4,19 @@ import { dogService, userService } from "../services";
 const dogController = {
   createDog: async (req: any, res: Response) => {
     try {
-      let ownerId = req.params.ownerId
+      let ownerId = req.user.userId;
+      // console.log(req.user.email)
       //  get user fri
-      console.log(ownerId)
-      let result = await dogService.createDog(req.body, ownerId);
-      let updateUser = await userService.updateUser(ownerId, result._id)
-      console.log(updateUser)
-      return res.json(result);
+      if (ownerId) {
+        console.log(ownerId);
+        let result = await dogService.createDog(req.body, ownerId);
+        let updateUser = await userService.updateUser(ownerId, result._id);
+        console.log(updateUser);
+        return res.json(result);
+      }
+      return res.json({
+        msg: "Please login to continue",
+      });
     } catch (error: any) {
       return res.json({
         msg: " Couldnt create dog",

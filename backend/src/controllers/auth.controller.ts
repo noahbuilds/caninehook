@@ -12,9 +12,9 @@ const authController = {
         });
       }
       let result = await userService.createUser(req.body);
-      let token =  tokenService.assignToken(result)
-      res.set("auth-token", token)
-      console.log(token)
+      let token = tokenService.assignToken(result);
+      res.set("auth-token", token);
+      console.log(token);
       return res.json(result);
     } catch (error: any) {
       return res.json({
@@ -28,11 +28,10 @@ const authController = {
       let result = await authService.loginUser(req.body);
       if (result) {
         let userToken = tokenService.assignToken(result);
-        res.set('auth-token', userToken)
+        res.set("auth-token", userToken);
         // console.log(userToken)
         return res.json(result);
       }
-      
 
       return res.json({
         msg: "username or password is incorrect",
@@ -45,12 +44,20 @@ const authController = {
       });
     }
   },
-  logoutUser:async (req:Request, res:Response) => {
-    res.removeHeader('auth-token')
-    res.status(200).json({
-      msg: 'logout was successfull'
-    })
-  }
+  logoutUser: async (req: Request, res: Response) => {
+    console.log(req.header("auth-token"));
+
+    if (!req.header("auth-token")) {
+      res.json({
+        msg: "You are not logged in",
+      });
+    } else {
+      res.removeHeader("auth-token");
+      res.status(200).json({
+        msg: "logout was successfull",
+      });
+    }
+  },
 };
 
 export { authController };
