@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema<IUser>({
   location: {type: String},
   rating: {type: Number},
   token: {type: String},
-  dogs: {type: [mongoose.Schema.Types.ObjectId], ref: "Dog"}
+  dogs: {type: [mongoose.Schema.Types.ObjectId], ref: "Dog", unique: true}
 
 },
 {
