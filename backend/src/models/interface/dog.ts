@@ -9,5 +9,5 @@ export interface IDog {
   numberOfHooks: number;
   owner: Types.ObjectId;
   gender: string;
-  price: string;
+  price: number;
 }
