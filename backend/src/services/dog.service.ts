@@ -26,7 +26,7 @@ const dogService =  {
         });
       },
       getDogById: async (id: string): Promise<IDog | null> => {
-        return Dog.findById(id);
+        return Dog.findById(id).populate("owner").exec();
       },
       getDogs: async (): Promise<IDog[] | null> => {
         // let dogOwner = await Dog.find({}).populate("owner").exec()

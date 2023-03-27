@@ -45,6 +45,12 @@ const authController = {
       });
     }
   },
+  logoutUser:async (req:Request, res:Response) => {
+    res.removeHeader('auth-token')
+    res.status(200).json({
+      msg: 'logout was successfull'
+    })
+  }
 };
 
 export { authController };

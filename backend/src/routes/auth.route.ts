@@ -5,7 +5,7 @@ import { authController } from "../controllers";
 
 router.post("/register", authController.createUser)
 router.post("/login", authController.loginUser)
-router.post("/logout", authController.loginUser)
+router.post("/logout", authController.logoutUser)
 
 
 export {
