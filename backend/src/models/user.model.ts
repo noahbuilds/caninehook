@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema<IUser>({
   gender: { type: String, enum: Gender, required: true },
   location: {type: String},
   rating: {type: Number},
-  token: {type: String}
+  token: {type: String},
+  dogs: {type: [mongoose.Schema.Types.ObjectId], ref: "Dog"}
 
 },
 {

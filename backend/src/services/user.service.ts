@@ -11,7 +11,6 @@ const userService = {
       password,
       gender,
       location,
-      rating,
     } = reqBody;
 
     let hashPassword = await bcrypt.hash(password, 10);
@@ -22,7 +21,6 @@ const userService = {
       password: hashPassword,
       gender,
       location,
-      rating,
     });
   },
 
@@ -36,8 +34,12 @@ const userService = {
     return User.findById(id);
   },
   getUsers: async (): Promise<IUser[] | null> => {
-    return User.find({});
+    return User.find({}).populate("dogs").exec()
   },
+
+  updateUser:async (id:string, dogId: string) => {
+    return User.findByIdAndUpdate({_id: id},  { $push: { dogs: dogId } })
+  }
 };
 
 export { userService };

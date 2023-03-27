@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { dogService } from "../services";
+import { dogService, userService } from "../services";
 
 const dogController = {
   createDog: async (req: any, res: Response) => {
@@ -8,6 +8,8 @@ const dogController = {
       //  get user fri
       console.log(ownerId)
       let result = await dogService.createDog(req.body, ownerId);
+      let updateUser = await userService.updateUser(ownerId, result._id)
+      console.log(updateUser)
       return res.json(result);
     } catch (error: any) {
       return res.json({

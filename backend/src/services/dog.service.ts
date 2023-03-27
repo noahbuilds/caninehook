@@ -2,7 +2,7 @@ import { IDog } from "../models/interface/dog";
 import { Dog } from "../models";
 
 const dogService =  {
-    createDog: async (reqBody: IDog, ownerId: any ):Promise<IDog> => {
+    createDog: async (reqBody: IDog, ownerId: any ):Promise<any> => {
         // console.log(reqBody)
         const {
             name,
