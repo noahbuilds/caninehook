@@ -96,6 +96,26 @@ const dogController = {
       console.log(error);
     }
   },
+  updateDogHookStatus:async (req:Request, res: Response) => {
+    let dogId = req.params.id
+    let isAvaibleForHook = req.params.status
+    console.log(isAvaibleForHook)
+    try {
+      let result = await dogService.updateDogHookStatus(dogId, isAvaibleForHook as unknown as boolean)
+      if(result){
+        res.json({
+          msg: result
+        })
+      }
+      else{
+        res.json({
+          msg: 'Dog does not exists'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
 };
 

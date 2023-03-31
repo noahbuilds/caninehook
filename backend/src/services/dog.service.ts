@@ -53,6 +53,18 @@ const dogService = {
     }
     return null;
   },
+
+  updateDogHookStatus: async (dogId: string, status: boolean) => {
+    let fetchedDog = await dogService.getDogById(dogId);
+    if (fetchedDog) {
+      let result = Dog.findByIdAndUpdate(
+        { _id: dogId },
+        { availableForHook: status }
+      );
+      return result;
+    }
+    return null;
+  },
 };
 
 export { dogService };
