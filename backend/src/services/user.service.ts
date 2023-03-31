@@ -4,14 +4,7 @@ import bcrypt from "bcrypt";
 
 const userService = {
   createUser: async (reqBody: IUser) => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      gender,
-      location,
-    } = reqBody;
+    const { firstName, lastName, email, password, gender, location } = reqBody;
 
     let hashPassword = await bcrypt.hash(password, 10);
     return User.create({
@@ -31,15 +24,21 @@ const userService = {
   },
 
   getUserById: async (id: string): Promise<IUser | null> => {
-    return User.findById(id);
+    let result = User.findById(id);
+    return result;
   },
   getUsers: async (): Promise<IUser[] | null> => {
-    return User.find({}).populate("dogs").exec()
+    let result = User.find({}).populate("dogs").exec();
+    return result;
   },
 
-  updateUser:async (id:string, dogId: string) => {
-    return User.findByIdAndUpdate({_id: id},  { $push: { dogs: dogId } })
-  }
+  updateUser: async (id: string, dogId: string) => {
+    let result = User.findByIdAndUpdate(
+      { _id: id },
+      { $push: { dogs: dogId } }
+    );
+    return result;
+  },
 };
 
 export { userService };
