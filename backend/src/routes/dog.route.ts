@@ -6,5 +6,6 @@ router.get("/", dogController.getDogs);
 router.get("/:id", dogController.getDogById);
 router.post("/", dogController.createDog)
 router.delete("/:id", dogController.deleteDog)
+router.patch("/:id/add-hook", dogController.updateDogHookNumber)
 
 export { router as dogRouter };

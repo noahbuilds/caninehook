@@ -32,7 +32,7 @@ const userService = {
     return result;
   },
 
-  updateUser: async (id: string, dogId: string) => {
+  addUserDog: async (id: string, dogId: string) => {
     let result = User.findByIdAndUpdate(
       { _id: id },
       { $push: { dogs: dogId } }

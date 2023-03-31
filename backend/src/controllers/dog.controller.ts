@@ -11,8 +11,8 @@ const dogController = {
       if (ownerId) {
         console.log(ownerId);
         let result = await dogService.createDog(req.body, ownerId);
-        let updateUser = await userService.updateUser(ownerId, result._id);
-        console.log(updateUser);
+        let userDog = await userService.addUserDog(ownerId, result._id);
+        console.log(userDog);
         return res.json(result);
       }
       return res.json({
@@ -70,13 +70,33 @@ const dogController = {
         });
       } else {
         res.json({
-          msg: "Can't delete dog",
+          msg: "Dog doesn't exists",
         });
       }
     } catch (error) {
       console.log(error);
     }
   },
+  updateDogHookNumber: async (req: any, res: Response) => {
+    let dogId = req.params.id;
+    try {
+      let result = await dogService.updateDogHookNumber(dogId);
+      if(result){
+        res.json({
+          msg: result,
+        });
+      }
+      else{
+        res.json({
+          msg: 'Dog does not exists'
+        })
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  
 };
 
 export { dogController };

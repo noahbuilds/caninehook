@@ -40,6 +40,19 @@ const dogService = {
     let result = Dog.findByIdAndRemove(dogId);
     return result;
   },
+  updateDogHookNumber: async (dogId: string): Promise<IDog | null> => {
+    let fetchedDog = await dogService.getDogById(dogId);
+    if (fetchedDog?.numberOfHooks) {
+      let result = Dog.findByIdAndUpdate(
+        { _id: dogId },
+        { numberOfHooks: fetchedDog?.numberOfHooks + 1 }
+      );
+      //  let result= await Dog.updateOne({_id:dogId},{ "numberOfHooks": fetchedDog?.numberOfHooks + 1 } )
+      //   console.log(result.acknowledged)
+      return result;
+    }
+    return null;
+  },
 };
 
 export { dogService };
