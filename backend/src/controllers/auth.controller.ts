@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
+import { IUser } from "../models/interface/user";
 
-import { authService, userService, tokenService } from "../services";
+import {
+  authService,
+  userService,
+  tokenService,
+  emailService,
+} from "../services";
 
 const authController = {
   createUser: async (req: Request, res: Response) => {
@@ -57,6 +63,36 @@ const authController = {
         msg: "logout was successfull",
       });
     }
+  },
+  loginWithAccessCode: async (req: Request, res: Response) => {
+    try {
+      // let userExists: IUser | null = await userService.emailExists(req.body.email)
+      // if(userExists){
+      let generatedAccessCode: number = Math.floor(
+        100000 + Math.random() * 900000
+      );
+      console.log(generatedAccessCode);
+      let result = await emailService.sendEmail(
+        req.body.email,
+        "Login To Dog House🐶",
+        `Use this code to continue your login ${generatedAccessCode}`
+      );
+      res.json({
+        msg: result,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+      res.json({
+        msg: "error sending message",
+      });
+    }
+  },
+  verifyAccessCode: async (req: Request, res: Response) => {
+    // let token = tokenService.assignToken(accessCode)
+    // res.setHeader('auth-token', token)
+    // res.json({
+    //   message: "result"
+    // })
   },
 };
 

@@ -1,6 +1,14 @@
 import nodemailer from "nodemailer";
 
-const transport = nodemailer.createTransport();
+const transport = nodemailer.createTransport({
+  service: "Gmail",
+  port: 587,
+  secure: false, // upgrade later with STARTTLS
+  auth: {
+    user: "noah@brimble.app",
+    pass: "noahbrimble",
+  },
+});
 
 const emailService = {
   sendEmail: async (to: string, subject: string, text: string) => {
@@ -10,7 +18,7 @@ const emailService = {
       subject: subject,
       text: text,
     };
-    await transport.sendMail(message);
+   return await transport.sendMail(message);
   },
 };
 
