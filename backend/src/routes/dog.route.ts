@@ -5,6 +5,6 @@ const router: Router = Router();
 router.get("/", dogController.getDogs);
 router.get("/:id", dogController.getDogById);
 router.post("/", dogController.createDog)
-// router.patch("/")
+router.delete("/:id", dogController.deleteDog)
 
 export { router as dogRouter };

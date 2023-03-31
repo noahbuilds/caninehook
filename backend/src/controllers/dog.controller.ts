@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { IDog } from "../models/interface/dog";
 import { dogService, userService } from "../services";
 
 const dogController = {
@@ -52,6 +53,28 @@ const dogController = {
         msg: " Couldnt get Dog",
         err: error.message,
       });
+    }
+  },
+  deleteDog: async (req: any, res: Response) => {
+    let dogId: string = req.params.id;
+    console.log(dogId);
+    try {
+      let result: IDog | null = await dogService.getDogById(dogId);
+      // console.log(req.user.userId);
+      // console.log(result);
+      if (result && result?.owner._id.equals(req.user.userId)) {
+        let deletedDog = await dogService.deleteDog(dogId);
+        res.json({
+          deletedDog: deletedDog,
+          msg: "Dog deleted successfully",
+        });
+      } else {
+        res.json({
+          msg: "Can't delete dog",
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   },
 };
