@@ -10,6 +10,7 @@ export interface IUser {
   rating: number;
   token: string;
   dogs: typeof Dog;
+  phoneNumber: string
 }
 
 export interface ILogin {
