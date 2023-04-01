@@ -65,6 +65,20 @@ const dogService = {
     }
     return null;
   },
+  updateDogHookPrice: async (
+    dogId: string,
+    hookPrice: number,
+    userId: string
+  ) => {
+    let fetchedDog = await dogService.getDogById(dogId);
+    console.log(userId)
+    if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
+      let result = Dog.findByIdAndUpdate({ _id: dogId }, { price: hookPrice });
+      return result;
+    }
+
+    return null;
+  },
 };
 
 export { dogService };

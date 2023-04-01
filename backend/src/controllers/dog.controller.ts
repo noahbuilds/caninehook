@@ -81,42 +81,69 @@ const dogController = {
     let dogId = req.params.id;
     try {
       let result = await dogService.updateDogHookNumber(dogId);
-      if(result){
+      if (result) {
         res.json({
           msg: result,
         });
-      }
-      else{
+      } else {
         res.json({
-          msg: 'Dog does not exists'
-        })
+          msg: "Dog does not exists",
+        });
       }
-      
     } catch (error) {
       console.log(error);
     }
   },
-  updateDogHookStatus:async (req:Request, res: Response) => {
-    let dogId = req.params.id
-    let isAvaibleForHook = req.params.status
-    console.log(isAvaibleForHook)
+  updateDogHookStatus: async (req: Request, res: Response) => {
+    let dogId = req.params.id;
+    let isAvaibleForHook = req.params.status.toLocaleLowerCase();
     try {
-      let result = await dogService.updateDogHookStatus(dogId, isAvaibleForHook as unknown as boolean)
-      if(result){
+      let result = await dogService.updateDogHookStatus(
+        dogId,
+        isAvaibleForHook as unknown as boolean
+      );
+      if (result) {
         res.json({
-          msg: result
-        })
-      }
-      else{
+          msg: result,
+        });
+      } else {
         res.json({
-          msg: 'Dog does not exists'
-        })
+          msg: "Dog does not exists",
+        });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  
+  },
+
+  updateDogPrice: async (req: any, res: Response) => {
+    let dogId = req.params.id;
+    let price = req.body.price;
+    console.log(price);
+    try {
+      // let result: IDog | null = await dogService.getDogById(dogId);
+      // console.log(req.user.userId);
+      // console.log(result);
+
+      let updatedDogPrice = await dogService.updateDogHookPrice(
+        dogId,
+        price,
+        req.user.userId
+      );
+      if (updatedDogPrice) {
+        res.json({
+          updatedDogPrice: updatedDogPrice,
+          msg: "Dog price updated successfully",
+        });
+      } else {
+        res.json({
+          msg: "I dont think you are the owner of this dog or dog doesnt exists",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export { dogController };
