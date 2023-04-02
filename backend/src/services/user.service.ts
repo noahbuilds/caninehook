@@ -3,8 +3,6 @@ import { IUser } from "../models/interface/user";
 import bcrypt from "bcrypt";
 import { emailService } from "./email.service";
 import { dogService } from "./dog.service";
-import { Types } from "mongoose";
-import { IDog } from "../models/interface/dog";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const userService = {
