@@ -19,7 +19,8 @@ const emailService = {
       subject: subject,
       text: text,
     };
-   return await transport.sendMail(message);
+   let result = await transport.sendMail(message);
+   return result
   },
 };
 
