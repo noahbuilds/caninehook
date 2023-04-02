@@ -57,20 +57,20 @@ const dogController = {
   },
   deleteDog: async (req: any, res: Response) => {
     let dogId: string = req.params.id;
-    console.log(dogId);
+
     try {
-      let result: IDog | null = await dogService.getDogById(dogId);
       // console.log(req.user.userId);
       // console.log(result);
-      if (result && result?.owner._id.equals(req.user.userId)) {
-        let deletedDog = await dogService.deleteDog(dogId);
+
+      let deletedDog = await dogService.deleteDog(dogId, req.user.userId);
+      if (deletedDog) {
         res.json({
           deletedDog: deletedDog,
           msg: "Dog deleted successfully",
         });
       } else {
         res.json({
-          msg: "Dog doesn't exists",
+          msg: "Dog doesn't exists or maybe youre not the owner",
         });
       }
     } catch (error) {
@@ -94,13 +94,14 @@ const dogController = {
       console.log(error);
     }
   },
-  updateDogHookStatus: async (req: Request, res: Response) => {
+  updateDogHookStatus: async (req: any, res: Response) => {
     let dogId = req.params.id;
     let isAvaibleForHook = req.params.status.toLocaleLowerCase();
     try {
       let result = await dogService.updateDogHookStatus(
         dogId,
-        isAvaibleForHook as unknown as boolean
+        isAvaibleForHook as unknown as boolean,
+        req.user.userId
       );
       if (result) {
         res.json({
@@ -144,6 +145,7 @@ const dogController = {
       console.log(error);
     }
   },
+ 
 };
 
 export { dogController };

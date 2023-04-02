@@ -11,9 +11,9 @@ const transport = nodemailer.createTransport({
 });
 
 const emailService = {
-  sendEmail: async (to: string, subject: string, text: string) => {
+  sendEmail: async (to: string, subject: string, text: string, from: string) => {
     const message = {
-      from: "edetnoah@gmail.com",
+      from: from,
       to: to,
       subject: subject,
       text: text,

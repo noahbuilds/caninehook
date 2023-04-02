@@ -75,7 +75,8 @@ const authController = {
       let result = await emailService.sendEmail(
         req.body.email,
         "Login To Dog House🐶",
-        `Use this code to continue your login ${generatedAccessCode}`
+        `Use this code to continue your login ${generatedAccessCode}`,
+        "edetnoah@gmail.com"
       );
       res.json({
         msg: result,

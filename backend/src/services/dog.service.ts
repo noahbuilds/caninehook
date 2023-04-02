@@ -36,9 +36,15 @@ const dogService = {
     let result = Dog.find({}).populate("owner").exec();
     return result;
   },
-  deleteDog: async (dogId: string) => {
-    let result = Dog.findByIdAndRemove(dogId);
-    return result;
+  deleteDog: async (dogId: string, userId: string) => {
+    
+    let fetchedDog = await dogService.getDogById(dogId);
+    if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
+      let result = Dog.findByIdAndDelete(dogId)
+      return result;
+    }
+    return null
+   
   },
   updateDogHookNumber: async (dogId: string): Promise<IDog | null> => {
     let fetchedDog = await dogService.getDogById(dogId);
@@ -54,9 +60,13 @@ const dogService = {
     return null;
   },
 
-  updateDogHookStatus: async (dogId: string, status: boolean) => {
+  updateDogHookStatus: async (
+    dogId: string,
+    status: boolean,
+    userId: string
+  ) => {
     let fetchedDog = await dogService.getDogById(dogId);
-    if (fetchedDog) {
+    if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
       let result = Dog.findByIdAndUpdate(
         { _id: dogId },
         { availableForHook: status }
@@ -71,7 +81,7 @@ const dogService = {
     userId: string
   ) => {
     let fetchedDog = await dogService.getDogById(dogId);
-    console.log(userId)
+    console.log(userId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
       let result = Dog.findByIdAndUpdate({ _id: dogId }, { price: hookPrice });
       return result;
