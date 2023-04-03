@@ -1,9 +1,3 @@
-import { userController } from "./user.controller";
-import { dogController } from "./dog.controller";
-import { authController } from "./auth.controller";
-
-export  {
-    userController,
-    dogController,
-    authController
-}
+export { userController } from "./user.controller";
+export { dogController } from "./dog.controller";
+export { authController } from "./auth.controller";

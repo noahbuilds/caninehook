@@ -1,7 +1,3 @@
-import {User} from "./user.model"
-import {Dog} from "./dog.model"
-
-
-export {Dog, User}
-
+export {Dog} from './dog.model'
+export {User} from './user.model'
 
