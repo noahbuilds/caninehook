@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import httpStatus from "http-status";
-import { ApiError } from "../utilities/apiError";
+import { ApiError } from "./utilities/apiError";
 import configuration from "./configs/configs";
 import mongoose, { ConnectOptions } from "mongoose";
 import {userRouter, dogRouter, authRouter}  from "./routes/index";
