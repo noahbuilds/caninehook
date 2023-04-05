@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
 import { IDog } from "../models/interface/dog";
-import { dogService, userService } from "../services";
+import { DogService, UserService } from "../services";
 
-const dogController = {
-  createDog: async (req: any, res: Response) => {
+class DogController {
+  private dogService = new DogService();
+  private userService = new UserService();
+  public createDog = async (req: any, res: Response) => {
     try {
       let ownerId = req.user.userId;
       // console.log(req.user.email)
       //  get user fri
       if (ownerId) {
         console.log(ownerId);
-        let result = await dogService.createDog(req.body, ownerId);
-        let userDog = await userService.addUserDog(ownerId, result._id);
+        let result = await this.dogService.createDog(req.body, ownerId);
+        let userDog = await this.userService.addUserDog(ownerId, result._id);
         console.log(userDog);
         return res.json(result);
       }
@@ -24,15 +26,15 @@ const dogController = {
         err: error.message,
       });
     }
-  },
+  };
 
-  getDogs: async (req: Request, res: Response) => {
+  public getDogs = async (req: Request, res: Response) => {
     // let users = await User.find({});
     // return res.json({
     //   user: users,
     // });
     try {
-      let result = await dogService.getDogs();
+      let result = await this.dogService.getDogs();
       return res.json(result);
     } catch (error: any) {
       return res.json({
@@ -40,11 +42,11 @@ const dogController = {
         err: error.message,
       });
     }
-  },
-  getDogById: async (req: Request, res: Response) => {
+  };
+  public getDogById = async (req: Request, res: Response) => {
     let id: string = req.params.id;
     try {
-      let result = await dogService.getDogById(id);
+      let result = await this.dogService.getDogById(id);
       res.json({
         result,
       });
@@ -54,15 +56,15 @@ const dogController = {
         err: error.message,
       });
     }
-  },
-  deleteDog: async (req: any, res: Response) => {
+  };
+  public deleteDog = async (req: any, res: Response) => {
     let dogId: string = req.params.id;
 
     try {
       // console.log(req.user.userId);
       // console.log(result);
 
-      let deletedDog = await dogService.deleteDog(dogId, req.user.userId);
+      let deletedDog = await this.dogService.deleteDog(dogId, req.user.userId);
       if (deletedDog) {
         res.json({
           deletedDog: deletedDog,
@@ -76,11 +78,11 @@ const dogController = {
     } catch (error) {
       console.log(error);
     }
-  },
-  updateDogHookNumber: async (req: any, res: Response) => {
+  };
+  public updateDogHookNumber = async (req: any, res: Response) => {
     let dogId = req.params.id;
     try {
-      let result = await dogService.updateDogHookNumber(dogId);
+      let result = await this.dogService.updateDogHookNumber(dogId);
       if (result) {
         res.json({
           msg: result,
@@ -93,12 +95,12 @@ const dogController = {
     } catch (error) {
       console.log(error);
     }
-  },
-  updateDogHookStatus: async (req: any, res: Response) => {
+  };
+  public updateDogHookStatus = async (req: any, res: Response) => {
     let dogId = req.params.id;
     let isAvaibleForHook = req.params.status.toLocaleLowerCase();
     try {
-      let result = await dogService.updateDogHookStatus(
+      let result = await this.dogService.updateDogHookStatus(
         dogId,
         isAvaibleForHook as unknown as boolean,
         req.user.userId
@@ -115,9 +117,9 @@ const dogController = {
     } catch (error) {
       console.log(error);
     }
-  },
+  };
 
-  updateDogPrice: async (req: any, res: Response) => {
+  public updateDogPrice = async (req: any, res: Response) => {
     let dogId = req.params.id;
     let price = req.body.price;
     console.log(price);
@@ -126,7 +128,7 @@ const dogController = {
       // console.log(req.user.userId);
       // console.log(result);
 
-      let updatedDogPrice = await dogService.updateDogHookPrice(
+      let updatedDogPrice = await this.dogService.updateDogHookPrice(
         dogId,
         price,
         req.user.userId
@@ -144,8 +146,6 @@ const dogController = {
     } catch (error) {
       console.log(error);
     }
-  },
- 
-};
-
-export { dogController };
+  };
+}
+export { DogController };

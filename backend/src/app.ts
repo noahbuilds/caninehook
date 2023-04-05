@@ -1,52 +1,70 @@
 import express, { Application, Request, Response } from "express";
 import httpStatus from "http-status";
 import { ApiError } from "./utilities/apiError";
-import configuration from "./configs/configs";
 import mongoose, { ConnectOptions } from "mongoose";
-import {userRouter, dogRouter, authRouter}  from "./routes/index";
+import { userRouter, dogRouter, authRouter } from "./routes/index";
 import { auth } from "./middlewares/auth";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+import morgan from "morgan";
 
-
-const app: Application = express();
-
-// parse json request body
-app.use(express.json());
-
-// parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
-
-// welcome page
-app.get("/", async (req: Request, res: Response): Promise<any> => {
-  return res.json({
-    msg: "welcome",
-  });
-});
-
-
-// database connection
-(async function () {
-  try {
-    await mongoose.connect(configuration.MONGO_URI!, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    } as ConnectOptions);
-    return console.log(`Successfully connected to ${configuration.MONGO_URI}`);
-  } catch (error) {
-    console.log("Error connecting to database: ", error);
-    return process.exit(1);
+class App {
+  public port: number;
+  public express: Application;
+  private mongoURI: string;
+  constructor(port: number, mongoURI: string) {
+    this.port = port;
+    this.mongoURI = mongoURI;
+    this.express = express();
+    this.initializeDatabaseConnection();
+    this.initializeMiddleware();
+    this.initializeControllers();
+    this.initializeErrorHandling();
   }
-})();
 
+  private async initializeDatabaseConnection(): Promise<void> {
+    try {
+      await mongoose.connect(this.mongoURI!, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      } as ConnectOptions);
+      return console.log(`Successfully connected to ${this.mongoURI}`);
+    } catch (error) {
+      console.log("Error connecting to database: ", error);
+      return process.exit(1);
+    }
+  }
 
-app.use("/api/v1/user", auth, userRouter )
-app.use("/api/v1/dogs", auth, dogRouter)
-app.use("/api/v1/auth", authRouter)
+  private initializeMiddleware(): void {
+    this.express.use(express.json());
 
-app.use((req: Request, res:Response, next)=>{
-  next(new ApiError(httpStatus.NOT_FOUND, "Not Found"))
-})
+    // parse urlencoded request body
+    this.express.use(express.urlencoded({ extended: true }));
+    this.express.use(express.urlencoded({ extended: true }));
+    this.express.use(helmet());
+    this.express.use(cors());
+    this.express.use(morgan("dev"));
+    this.express.use(compression());
+  }
 
-app.listen(configuration.ENV_PORT, () => {
-  console.log("App is running on PORT 4000");
-});
+  private initializeControllers(): void {
+    this.express.use("/api/v1/user", auth, userRouter);
+    this.express.use("/api/v1/dogs", auth, dogRouter);
+    this.express.use("/api/v1/auth", authRouter);
+  }
 
+  private initializeErrorHandling(): void {
+    this.express.use((req: Request, res: Response, next) => {
+      next(new ApiError(httpStatus.NOT_FOUND, "Not Found"));
+    });
+  }
+
+  public startListener(): void {
+    this.express.listen(this.port, () => {
+      console.log(`App is running on PORT ${this.port}`);
+    });
+  }
+}
+
+export {App}

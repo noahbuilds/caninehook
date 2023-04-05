@@ -1,9 +1,8 @@
 import { IDog } from "../models/interface/dog";
 import { Dog } from "../models";
 
-const dogService = {
-  createDog: async (reqBody: IDog, ownerId: any): Promise<any> => {
-    // console.log(reqBody)
+class DogService {
+  public async createDog(reqBody: IDog, ownerId: string): Promise<any> {
     const {
       name,
       breed,
@@ -25,29 +24,29 @@ const dogService = {
       price,
     });
     return createdDog;
-  },
-  getDogById: async (id: string): Promise<IDog | null> => {
+  }
+
+  public async getDogById(id: string) {
     let result = Dog.findById(id).populate("owner").exec();
     return result;
-  },
-  getDogs: async (): Promise<IDog[] | null> => {
-    // let dogOwner = await Dog.find({}).populate("owner").exec()
-    // console.log(dogOwner)
+  }
+
+  public async getDogs(): Promise<IDog[] | null> {
     let result = Dog.find({}).populate("owner").exec();
     return result;
-  },
-  deleteDog: async (dogId: string, userId: string) => {
-    
-    let fetchedDog = await dogService.getDogById(dogId);
+  }
+
+  public async deleteDog(dogId: string, userId: string) {
+    let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
-      let result = Dog.findByIdAndDelete(dogId)
+      let result = Dog.findByIdAndDelete(dogId);
       return result;
     }
-    return null
-   
-  },
-  updateDogHookNumber: async (dogId: string): Promise<IDog | null> => {
-    let fetchedDog = await dogService.getDogById(dogId);
+    return null;
+  }
+
+  public async updateDogHookNumber(dogId: string): Promise<IDog | null> {
+    let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog?.numberOfHooks) {
       let result = Dog.findByIdAndUpdate(
         { _id: dogId },
@@ -58,14 +57,14 @@ const dogService = {
       return result;
     }
     return null;
-  },
+  }
 
-  updateDogHookStatus: async (
+  public async updateDogHookStatus(
     dogId: string,
     status: boolean,
     userId: string
-  ) => {
-    let fetchedDog = await dogService.getDogById(dogId);
+  ) {
+    let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
       let result = Dog.findByIdAndUpdate(
         { _id: dogId },
@@ -74,13 +73,14 @@ const dogService = {
       return result;
     }
     return null;
-  },
-  updateDogHookPrice: async (
+  }
+
+  public async updateDogHookPrice(
     dogId: string,
     hookPrice: number,
     userId: string
-  ) => {
-    let fetchedDog = await dogService.getDogById(dogId);
+  ) {
+    let fetchedDog = await this.getDogById(dogId);
     console.log(userId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
       let result = Dog.findByIdAndUpdate({ _id: dogId }, { price: hookPrice });
@@ -88,7 +88,7 @@ const dogService = {
     }
 
     return null;
-  },
-};
+  }
+}
 
-export { dogService };
+export { DogService };

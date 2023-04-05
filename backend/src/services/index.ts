@@ -1,7 +1,7 @@
-export { userService } from "./user.service";
-export {dogService} from "./dog.service"
-export { authService } from "./auth.service";
+export { UserService } from "./user.service";
+export {DogService} from "./dog.service"
+export { AuthService } from "./auth.service";
 export { tokenService } from "./token.service";
-export { emailService } from "./email.service";
+export { EmailService } from "./email.service";
 
 

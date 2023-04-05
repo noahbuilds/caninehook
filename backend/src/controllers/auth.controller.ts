@@ -2,22 +2,25 @@ import { Request, Response } from "express";
 import { IUser } from "../models/interface/user";
 
 import {
-  authService,
-  userService,
+  AuthService,
+  UserService,
   tokenService,
-  emailService,
+  EmailService,
 } from "../services";
 
-const authController = {
-  createUser: async (req: Request, res: Response) => {
+class AuthController {
+  private userService = new UserService();
+  private authService = new AuthService();
+  private emailService = new EmailService();
+  public createUser = async (req: Request, res: Response) => {
     try {
-      let alreadyExist = await userService.emailExists(req.body.email);
+      let alreadyExist = await this.userService.emailExists(req.body.email);
       if (alreadyExist) {
         return res.json({
           msg: "Email has already been taken",
         });
       }
-      let result = await userService.createUser(req.body);
+      let result = await this.userService.createUser(req.body);
       let token = tokenService.assignToken(result);
       res.set("auth-token", token);
       console.log(token);
@@ -28,10 +31,10 @@ const authController = {
         err: error.message,
       });
     }
-  },
-  loginUser: async (req: Request, res: Response) => {
+  };
+  public loginUser = async (req: Request, res: Response) => {
     try {
-      let result = await authService.loginUser(req.body);
+      let result = await this.authService.loginUser(req.body);
       if (result) {
         let userToken = tokenService.assignToken(result);
         res.set("auth-token", userToken);
@@ -49,8 +52,8 @@ const authController = {
         err: error.message,
       });
     }
-  },
-  logoutUser: async (req: Request, res: Response) => {
+  };
+  public logoutUser = async (req: Request, res: Response) => {
     console.log(req.header("auth-token"));
 
     if (!req.header("auth-token")) {
@@ -63,8 +66,8 @@ const authController = {
         msg: "logout was successfull",
       });
     }
-  },
-  loginWithAccessCode: async (req: Request, res: Response) => {
+  };
+  public loginWithAccessCode = async (req: Request, res: Response) => {
     try {
       // let userExists: IUser | null = await userService.emailExists(req.body.email)
       // if(userExists){
@@ -72,7 +75,7 @@ const authController = {
         100000 + Math.random() * 900000
       );
       console.log(generatedAccessCode);
-      let result = await emailService.sendEmail(
+      let result = await this.emailService.sendEmail(
         req.body.email,
         "Login To Dog House🐶",
         `Use this code to continue your login ${generatedAccessCode}`,
@@ -87,14 +90,14 @@ const authController = {
         msg: "error sending message",
       });
     }
-  },
-  verifyAccessCode: async (req: Request, res: Response) => {
+  };
+  public verifyAccessCode = async (req: Request, res: Response) => {
     // let token = tokenService.assignToken(accessCode)
     // res.setHeader('auth-token', token)
     // res.json({
     //   message: "result"
     // })
-  },
-};
+  };
+}
 
-export { authController };
+export { AuthController };

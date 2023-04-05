@@ -1,6 +1,8 @@
 import { Router } from "express";
-import { dogController } from "../controllers/index";
+import { DogController } from "../controllers/index";
 const router: Router = Router();
+
+const dogController = new DogController()
 
 router.get("/", dogController.getDogs);
 router.get("/:id", dogController.getDogById);

@@ -1,9 +1,10 @@
 import { Router } from "express";
-import {userController} from "../controllers/index"
+import {UserController} from "../controllers/index"
 const router: Router = Router();
 
 
 
+const userController = new UserController()
 //get users
 router.get("/", userController.getUsers);
 
