@@ -41,7 +41,6 @@ class App {
 
     // parse urlencoded request body
     this.express.use(express.urlencoded({ extended: true }));
-    this.express.use(express.urlencoded({ extended: true }));
     this.express.use(helmet());
     this.express.use(cors());
     this.express.use(morgan("dev"));
