@@ -2,9 +2,10 @@ import { ILogin, IUser } from "../models/interface/user";
 
 import { UserService, tokenService } from "./index";
 import bcrypt from "bcrypt";
-
+import { injectable } from "tsyringe";
+@injectable()
 class AuthService {
-  private userService = new UserService();
+  constructor(private readonly userService: UserService) {}
   public loginUser = async (reqBody: ILogin): Promise<IUser | null> => {
     const { email, password } = reqBody;
     let foundUser = await this.userService.emailExists(email);

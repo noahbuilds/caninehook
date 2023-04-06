@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import { IDog } from "../models/interface/dog";
 import { DogService, UserService } from "../services";
-
+import { injectable } from "tsyringe";
+@injectable()
 class DogController {
-  private dogService = new DogService();
-  private userService = new UserService();
+  constructor(
+    private readonly dogService: DogService,
+    private readonly userService: UserService
+  ) {}
   public createDog = async (req: any, res: Response) => {
     try {
       let ownerId = req.user.userId;

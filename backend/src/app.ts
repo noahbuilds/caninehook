@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import express, { Application, Request, Response } from "express";
 import httpStatus from "http-status";
 import { ApiError } from "./utilities/apiError";
@@ -66,4 +67,4 @@ class App {
   }
 }
 
-export {App}
+export { App };

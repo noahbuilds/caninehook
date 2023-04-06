@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { DogController } from "../controllers/index";
+import { container } from "tsyringe";
 const router: Router = Router();
 
-const dogController = new DogController()
+const dogController = container.resolve(DogController);
 
 router.get("/", dogController.getDogs);
 router.get("/:id", dogController.getDogById);

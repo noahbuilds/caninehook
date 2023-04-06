@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { IUser } from "../models/interface/user";
+import { injectable } from "tsyringe";
 
 import {
   AuthService,
@@ -7,11 +8,13 @@ import {
   tokenService,
   EmailService,
 } from "../services";
-
+@injectable()
 class AuthController {
-  private userService = new UserService();
-  private authService = new AuthService();
-  private emailService = new EmailService();
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+    private readonly emailService: EmailService
+  ) {}
   public createUser = async (req: Request, res: Response) => {
     try {
       let alreadyExist = await this.userService.emailExists(req.body.email);

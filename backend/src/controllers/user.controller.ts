@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
+import { injectable } from "tsyringe";
 
+@injectable()
 class UserController {
-  private userService = new UserService();
+  constructor(private readonly userService: UserService) {}
   public async getUsers(req: any, res: Response) {
     // let users = await User.find({});
     // return res.json({

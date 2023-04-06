@@ -4,11 +4,14 @@ import bcrypt from "bcrypt";
 import { EmailService } from "./email.service";
 import { DogService } from "./dog.service";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { injectable } from "tsyringe";
 
+@injectable()
 class UserService {
-  private dogService = new DogService();
-  private emailService = new EmailService();
-  constructor() {}
+  constructor(
+    private readonly dogService: DogService,
+    private readonly emailService: EmailService
+  ) {}
   public async createUser(reqBody: IUser) {
     const { firstName, lastName, email, password, gender, location } = reqBody;
 
