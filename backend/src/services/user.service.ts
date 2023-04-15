@@ -1,5 +1,5 @@
-import { User } from "../models";
-import { IUser } from "../models/interface/user";
+import { User } from "../datasource/models";
+import { IUser } from "../datasource/interface/user";
 import bcrypt from "bcrypt";
 import { EmailService } from "./email.service";
 import { DogService } from "./dog.service";

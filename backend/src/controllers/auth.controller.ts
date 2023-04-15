@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../models/interface/user";
+import { IUser } from "../datasource/interface/user";
 import { injectable } from "tsyringe";
 
 import {

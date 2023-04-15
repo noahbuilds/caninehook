@@ -1,5 +1,5 @@
-import { IDog } from "../models/interface/dog";
-import { Dog } from "../models";
+import { IDog } from "../datasource/interface/dog";
+import { Dog } from "../datasource/models";
 
 class DogService {
   public async createDog(reqBody: IDog, ownerId: string): Promise<any> {

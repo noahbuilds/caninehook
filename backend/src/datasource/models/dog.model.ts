@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { IDog } from "./interface/dog";
-import { Gender } from "./enums/gender";
+import { IDog } from "../interface/dog";
+import { Gender } from "../enums/gender";
 
 const dogSchema = new mongoose.Schema<IDog>({
   name: { type: String, required: true },

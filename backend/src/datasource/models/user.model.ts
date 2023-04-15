@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Gender } from "./enums/gender";
-import { IUser } from "./interface/user";
+import { Gender } from "../enums/gender";
+import { IUser } from "../interface/user";
 import bcrypt from 'bcrypt'
 
 const userSchema = new mongoose.Schema<IUser>({

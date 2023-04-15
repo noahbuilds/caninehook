@@ -1,4 +1,4 @@
-import { ILogin, IUser } from "../models/interface/user";
+import { ILogin, IUser } from "../datasource/interface/user";
 
 import { UserService, tokenService } from "./index";
 import bcrypt from "bcrypt";

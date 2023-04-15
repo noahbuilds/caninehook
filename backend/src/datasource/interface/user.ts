@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Dog } from "../dog.model";
+import { Dog } from "../models/dog.model";
 
 export interface IUser {
   _id: Types.ObjectId;

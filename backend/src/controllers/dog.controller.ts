@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IDog } from "../models/interface/dog";
+import { IDog } from "../datasource/interface/dog";
 import { DogService, UserService } from "../services";
 import { injectable } from "tsyringe";
 @injectable()
