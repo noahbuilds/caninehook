@@ -1,45 +1,36 @@
+import { Types } from "mongoose";
+import { injectable } from "tsyringe";
 import { IDog } from "../datasource/interface/dog";
-import { Dog } from "../datasource/models";
+import { IUser } from "../datasource/interface/user";
+import { DogRepository } from "../datasource/repository";
 
+@injectable()
 class DogService {
-  public async createDog(reqBody: IDog, ownerId: string): Promise<any> {
-    const {
-      name,
-      breed,
-      image,
-      availableForHook,
-      numberOfHooks,
-      gender,
-      owner,
-      price,
-    } = reqBody;
-    let createdDog = Dog.create({
-      name,
-      breed,
-      image,
-      availableForHook,
-      numberOfHooks,
-      gender,
-      owner: ownerId,
-      price,
-    });
+  constructor(private readonly dogRepo: DogRepository) {}
+  public async createDog(
+    reqBody: IDog,
+    ownerId: Types.ObjectId & IUser
+  ): Promise<any> {
+    reqBody.owner = ownerId;
+
+    let createdDog = this.dogRepo.create(reqBody);
     return createdDog;
   }
 
   public async getDogById(id: string) {
-    let result = Dog.findById(id).populate("owner").exec();
+    let result = this.dogRepo.fetchDog(id);
     return result;
   }
 
   public async getDogs(): Promise<IDog[] | null> {
-    let result = Dog.find({}).populate("owner").exec();
+    let result = this.dogRepo.fetchDogs();
     return result;
   }
 
   public async deleteDog(dogId: string, userId: string) {
     let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
-      let result = Dog.findByIdAndDelete(dogId);
+      let result = this.dogRepo.delete(dogId);
       return result;
     }
     return null;
@@ -48,10 +39,10 @@ class DogService {
   public async updateDogHookNumber(dogId: string): Promise<IDog | null> {
     let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog?.numberOfHooks) {
-      let result = Dog.findByIdAndUpdate(
-        { _id: dogId },
-        { numberOfHooks: fetchedDog?.numberOfHooks + 1 }
-      );
+      let result = this.dogRepo.update(dogId, {
+        numberOfHooks: fetchedDog?.numberOfHooks + 1,
+      });
+
       //  let result= await Dog.updateOne({_id:dogId},{ "numberOfHooks": fetchedDog?.numberOfHooks + 1 } )
       //   console.log(result.acknowledged)
       return result;
@@ -66,10 +57,7 @@ class DogService {
   ) {
     let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
-      let result = Dog.findByIdAndUpdate(
-        { _id: dogId },
-        { availableForHook: status }
-      );
+      let result = this.dogRepo.update(dogId, { availableForHook: status });
       return result;
     }
     return null;
@@ -83,7 +71,7 @@ class DogService {
     let fetchedDog = await this.getDogById(dogId);
     console.log(userId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
-      let result = Dog.findByIdAndUpdate({ _id: dogId }, { price: hookPrice });
+      let result = this.dogRepo.update(dogId, { price: hookPrice });
       return result;
     }
 

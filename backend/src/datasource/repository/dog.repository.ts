@@ -2,31 +2,31 @@ import { IDog } from "../interface/dog";
 import { Dog } from "../models";
 
 export class DogRepository {
-  private readonly dogRepo = Dog;
+  private readonly dogDB = Dog;
 
-  public create = async (user: IDog): Promise<IDog | null> => {
-    let result = await this.dogRepo.create(user);
+  public create = async (dog: IDog): Promise<IDog | null> => {
+    let result = await this.dogDB.create(dog);
     return result;
   };
-  public read = async (): Promise<IDog[] | []> => {
-    let result = await this.dogRepo.find({});
-    return result;
-  };
-
-  public readOne = async (userId: string): Promise<IDog | null> => {
-    let result = await this.dogRepo.findById({ userId });
+  public fetchDogs = async (): Promise<IDog[] | []> => {
+    let result = await this.dogDB.find({}).populate("owner").exec();;
     return result;
   };
 
-  public update = async (userId: string, option: any): Promise<IDog | null> => {
-    let result = await this.dogRepo.findByIdAndUpdate(
-      { _id: userId },
-      { option }
+  public fetchDog = async (dogId: string): Promise<IDog | null> => {
+    let result = await this.dogDB.findById({ _id: dogId }).populate("owner").exec();;
+    return result;
+  };
+
+  public update = async (dogId: string, option: any): Promise<IDog | null> => {
+    let result = await this.dogDB.findByIdAndUpdate(
+      { _id: dogId },
+      option 
     );
     return result;
   };
-  public delete = async (userId: string): Promise<IDog | null> => {
-    let result = await this.dogRepo.findByIdAndDelete({ _id: userId });
+  public delete = async (dogId: string): Promise<IDog | null> => {
+    let result = await this.dogDB.findByIdAndDelete({ _id: dogId });
     return result;
   };
 }

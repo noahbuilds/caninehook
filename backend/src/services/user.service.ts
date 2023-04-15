@@ -5,25 +5,22 @@ import { EmailService } from "./email.service";
 import { DogService } from "./dog.service";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { injectable } from "tsyringe";
+import { UserRepository } from "../datasource/repository";
 
 @injectable()
 class UserService {
   constructor(
     private readonly dogService: DogService,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
+    private readonly userRepo: UserRepository
   ) {}
   public async createUser(reqBody: IUser) {
     const { firstName, lastName, email, password, gender, location } = reqBody;
 
     let hashPassword = await bcrypt.hash(password, 10);
-    return User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashPassword,
-      gender,
-      location,
-    });
+    reqBody.password = hashPassword
+    let result = this.userRepo.create(reqBody)
+   return result;
   }
 
   public async emailExists(email: string): Promise<IUser | null> {

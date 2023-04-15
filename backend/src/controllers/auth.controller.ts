@@ -26,7 +26,7 @@ class AuthController {
       let result = await this.userService.createUser(req.body);
       let token = tokenService.assignToken(result);
       res.set("auth-token", token);
-      console.log(token);
+      // console.log(token);
       return res.json(result);
     } catch (error: any) {
       return res.json({
