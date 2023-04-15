@@ -8,13 +8,13 @@ export class UserRepository {
     let result = await this.userDB.create(user);
     return result;
   };
-  public read = async (): Promise<IUser[] | []> => {
-    let result = await this.userDB.find({});
+  public fetchUsers = async (): Promise<IUser[] | []> => {
+    let result = await this.userDB.find({}).populate("dogs").exec();;
     return result;
   };
 
-  public readOne = async (userId: string): Promise<IUser | null> => {
-    let result = await this.userDB.findById({ userId });
+  public fetchUser = async (userId: string): Promise<IUser | null> => {
+    let result = await this.userDB.findById({ userId }).populate("dogs").exec();;
     return result;
   };
 
@@ -24,7 +24,7 @@ export class UserRepository {
   ): Promise<IUser | null> => {
     let result = await this.userDB.findByIdAndUpdate(
       { _id: userId },
-      { option }
+      option 
     );
     return result;
   };
@@ -32,4 +32,9 @@ export class UserRepository {
     let result = await this.userDB.findByIdAndDelete({ _id: userId });
     return result;
   };
+
+  public findEmail =async(email: string): Promise<IUser | null> =>{
+    let result =  await this.userDB.findOne({email});
+    return result;
+  }
 }

@@ -1,4 +1,3 @@
-import { User } from "../datasource/models";
 import { IUser } from "../datasource/interface/user";
 import bcrypt from "bcrypt";
 import { EmailService } from "./email.service";
@@ -18,31 +17,28 @@ class UserService {
     const { firstName, lastName, email, password, gender, location } = reqBody;
 
     let hashPassword = await bcrypt.hash(password, 10);
-    reqBody.password = hashPassword
-    let result = this.userRepo.create(reqBody)
-   return result;
+    reqBody.password = hashPassword;
+    let result = this.userRepo.create(reqBody);
+    return result;
   }
 
   public async emailExists(email: string): Promise<IUser | null> {
-    let result = await User.findOne({ email });
+    let result = await this.userRepo.findEmail(email);
 
     return result;
   }
 
   public async getUserById(userId: string): Promise<IUser | null> {
-    let result = User.findById(userId).populate("dogs").exec();
+    let result = this.userRepo.fetchUser(userId);
     return result;
   }
   public async getUsers(): Promise<IUser[] | null> {
-    let result = User.find({}).populate("dogs").exec();
+    let result = this.userRepo.fetchUsers();
     return result;
   }
 
   public async addUserDog(userId: string, dogId: string) {
-    let result = User.findByIdAndUpdate(
-      { _id: userId },
-      { $push: { dogs: dogId } }
-    );
+    let result = this.userRepo.update(userId, { $push: { dogs: dogId } });
     return result;
   }
   public async requestDogInspection(
