@@ -9,12 +9,12 @@ export class UserRepository {
     return result;
   };
   public fetchUsers = async (): Promise<IUser[] | []> => {
-    let result = await this.userDB.find({}).populate("dogs").exec();;
+    let result = await this.userDB.find({}).populate("dogs").exec();
     return result;
   };
 
   public fetchUser = async (userId: string): Promise<IUser | null> => {
-    let result = await this.userDB.findById({ userId }).populate("dogs").exec();;
+    let result = await this.userDB.findById({ userId }).populate("dogs").exec();
     return result;
   };
 
@@ -22,10 +22,7 @@ export class UserRepository {
     userId: string,
     option: any
   ): Promise<IUser | null> => {
-    let result = await this.userDB.findByIdAndUpdate(
-      { _id: userId },
-      option 
-    );
+    let result = await this.userDB.findByIdAndUpdate({ _id: userId }, option);
     return result;
   };
   public delete = async (userId: string): Promise<IUser | null> => {
@@ -33,8 +30,8 @@ export class UserRepository {
     return result;
   };
 
-  public findEmail =async(email: string): Promise<IUser | null> =>{
-    let result =  await this.userDB.findOne({email});
+  public findEmail = async (email: string): Promise<IUser | null> => {
+    let result = await this.userDB.findOne({ email });
     return result;
-  }
+  };
 }

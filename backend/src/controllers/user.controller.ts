@@ -5,7 +5,7 @@ import { injectable } from "tsyringe";
 @injectable()
 class UserController {
   constructor(private readonly userService: UserService) {}
-  public async getUsers(req: any, res: Response) {
+  public getUsers = async (req: any, res: Response) => {
     // let users = await User.find({});
     // return res.json({
     //   user: users,
@@ -20,8 +20,8 @@ class UserController {
         err: error.message,
       });
     }
-  }
-  public async getUserById(req: Request, res: Response) {
+  };
+  public getUserById = async (req: Request, res: Response) => {
     let id: string = req.params.id;
     try {
       let result = await this.userService.getUserById(id);
@@ -34,8 +34,8 @@ class UserController {
         err: error.message,
       });
     }
-  }
-  public async requestDogInspection(req: any, res: Response) {
+  };
+  public requestDogInspection = async (req: any, res: Response) => {
     let userId: string = req.user.userId as unknown as string;
     let dogId: string = req.params.dogId as unknown as string;
     let message: string = req.body.message
@@ -55,7 +55,7 @@ class UserController {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 }
 
 export { UserController };

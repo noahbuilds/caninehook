@@ -9,20 +9,20 @@ export class DogRepository {
     return result;
   };
   public fetchDogs = async (): Promise<IDog[] | []> => {
-    let result = await this.dogDB.find({}).populate("owner").exec();;
+    let result = await this.dogDB.find({}).populate("owner").exec();
     return result;
   };
 
   public fetchDog = async (dogId: string): Promise<IDog | null> => {
-    let result = await this.dogDB.findById({ _id: dogId }).populate("owner").exec();;
+    let result = await this.dogDB
+      .findById({ _id: dogId })
+      .populate("owner")
+      .exec();
     return result;
   };
 
   public update = async (dogId: string, option: any): Promise<IDog | null> => {
-    let result = await this.dogDB.findByIdAndUpdate(
-      { _id: dogId },
-      option 
-    );
+    let result = await this.dogDB.findByIdAndUpdate({ _id: dogId }, option);
     return result;
   };
   public delete = async (dogId: string): Promise<IDog | null> => {

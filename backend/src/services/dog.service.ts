@@ -7,36 +7,36 @@ import { DogRepository } from "../datasource/repository";
 @injectable()
 class DogService {
   constructor(private readonly dogRepo: DogRepository) {}
-  public async createDog(
+  public createDog = async (
     reqBody: IDog,
     ownerId: Types.ObjectId & IUser
-  ): Promise<any> {
+  ): Promise<any> => {
     reqBody.owner = ownerId;
 
     let createdDog = this.dogRepo.create(reqBody);
     return createdDog;
-  }
+  };
 
-  public async getDogById(id: string) {
+  public getDogById = async (id: string) => {
     let result = this.dogRepo.fetchDog(id);
     return result;
-  }
+  };
 
-  public async getDogs(): Promise<IDog[] | null> {
+  public getDogs = async (): Promise<IDog[] | null> => {
     let result = this.dogRepo.fetchDogs();
     return result;
-  }
+  };
 
-  public async deleteDog(dogId: string, userId: string) {
+  public deleteDog = async (dogId: string, userId: string) => {
     let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
       let result = this.dogRepo.delete(dogId);
       return result;
     }
     return null;
-  }
+  };
 
-  public async updateDogHookNumber(dogId: string): Promise<IDog | null> {
+  public updateDogHookNumber = async (dogId: string): Promise<IDog | null> => {
     let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog?.numberOfHooks) {
       let result = this.dogRepo.update(dogId, {
@@ -48,26 +48,26 @@ class DogService {
       return result;
     }
     return null;
-  }
+  };
 
-  public async updateDogHookStatus(
+  public updateDogHookStatus = async (
     dogId: string,
     status: boolean,
     userId: string
-  ) {
+  ) => {
     let fetchedDog = await this.getDogById(dogId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
       let result = this.dogRepo.update(dogId, { availableForHook: status });
       return result;
     }
     return null;
-  }
+  };
 
-  public async updateDogHookPrice(
+  public updateDogHookPrice = async (
     dogId: string,
     hookPrice: number,
     userId: string
-  ) {
+  ) => {
     let fetchedDog = await this.getDogById(dogId);
     console.log(userId);
     if (fetchedDog && fetchedDog?.owner._id.equals(userId)) {
@@ -76,7 +76,7 @@ class DogService {
     }
 
     return null;
-  }
+  };
 }
 
 export { DogService };

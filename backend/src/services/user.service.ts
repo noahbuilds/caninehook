@@ -13,39 +13,39 @@ class UserService {
     private readonly emailService: EmailService,
     private readonly userRepo: UserRepository
   ) {}
-  public async createUser(reqBody: IUser) {
+  public createUser = async (reqBody: IUser) => {
     const { firstName, lastName, email, password, gender, location } = reqBody;
 
     let hashPassword = await bcrypt.hash(password, 10);
     reqBody.password = hashPassword;
     let result = this.userRepo.create(reqBody);
     return result;
-  }
+  };
 
-  public async emailExists(email: string): Promise<IUser | null> {
+  public emailExists = async (email: string): Promise<IUser | null> => {
     let result = await this.userRepo.findEmail(email);
 
     return result;
-  }
+  };
 
-  public async getUserById(userId: string): Promise<IUser | null> {
+  public getUserById = async (userId: string): Promise<IUser | null> => {
     let result = this.userRepo.fetchUser(userId);
     return result;
-  }
-  public async getUsers(): Promise<IUser[] | null> {
+  };
+  public getUsers = async (): Promise<IUser[] | null> => {
     let result = this.userRepo.fetchUsers();
     return result;
-  }
+  };
 
-  public async addUserDog(userId: string, dogId: string) {
+  public addUserDog = async (userId: string, dogId: string) => {
     let result = this.userRepo.update(userId, { $push: { dogs: dogId } });
     return result;
-  }
-  public async requestDogInspection(
+  };
+  public requestDogInspection = async (
     userId: string,
     dogId: string,
     message: string
-  ): Promise<string | SMTPTransport.SentMessageInfo> {
+  ): Promise<string | SMTPTransport.SentMessageInfo> => {
     let requestingUser = await this.getUserById(userId);
     // console.log(requestingUser + "i am the resquestiin user")
     // if(message == ''){
@@ -68,6 +68,6 @@ class UserService {
     }
 
     return "Couldnt find user requesting for inspection";
-  }
+  };
 }
 export { UserService };
